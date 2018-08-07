@@ -11,24 +11,24 @@ public class GithubAvatarGenerator {
     private static final int GITHUB_AVATAR_ROWS = 420;
     private static final int GITHUB_AVATAR_COLS = 420;
     // 围边使用的灰色
-    private static final int [] COLOR_GREY_BGR = new int[] {
-            230, 230, 230
+    private static final int[] COLOR_GREY_BGR = new int[]{
+            240, 240, 240
     };
     // 选出一些大概会比较好看的颜色池用于生成
-    private static final int [][] COLOR_POOL_RGB = new int[][] {
-            {170, 205, 102},
-            {159, 255, 84},
-            {209, 206, 0},
-            {255, 255, 0},
-            {47, 107, 85},
-            {47, 255, 173},
-            {0, 173, 205},
-            {8, 101, 139},
-            {180, 180, 238},
-            {106, 106, 255},
-            {155, 211, 255},
-            {204, 50, 153},
-            {101, 119, 139}
+    private static final int[][] COLOR_POOL_RGB = new int[][]{
+            {186, 85, 211},
+            {100, 149, 237},
+            {255, 215, 0},
+            {255, 165, 0},
+            {250, 128, 114},
+            {210, 105, 30},
+            {128, 128, 0},
+            {189, 183, 107},
+            {218, 165, 32},
+            {160, 82, 45},
+            {0, 215, 255},
+            {0, 165, 255},
+            {92, 92, 205}
     };
     // 外围宽度
     private static final int GITHUB_AVATAR_FRAME_WIDTH = 35;
@@ -39,11 +39,12 @@ public class GithubAvatarGenerator {
 
     /**
      * 获取一个 5x5 的随机填充对称矩阵
+     *
      * @return 5x5 随机填充对称矩阵
      */
-    private boolean [][] getGithubAvatarVertex() {
+    private boolean[][] getGithubAvatarVertex() {
         // 新建矩阵
-        boolean [][] vertex = new boolean[5][5];
+        boolean[][] vertex = new boolean[5][5];
 
         // 先随机填充中间一条
         Random random = new Random();
@@ -74,14 +75,15 @@ public class GithubAvatarGenerator {
 
     /**
      * 获取一个随机的 github 头像 BGR 信息
+     *
      * @return 图像 BGR 信息
      */
-    private byte [][][] getGithubAvatarRGBData() {
+    private byte[][][] getGithubAvatarRGBData() {
         // 通道
         int channels = 3;
 
         // BGR 信息
-        byte [][][] bgrData = new byte[GITHUB_AVATAR_ROWS][GITHUB_AVATAR_COLS][channels];
+        byte[][][] bgrData = new byte[GITHUB_AVATAR_ROWS][GITHUB_AVATAR_COLS][channels];
 
         // 获取一个随机的颜色索引
         Random random = new Random();
@@ -90,7 +92,7 @@ public class GithubAvatarGenerator {
             randomIndex = 0 - randomIndex;
         }
         // 用索引获取一个随机的颜色
-        int [] randomBGR = new int[3];
+        int[] randomBGR = new int[3];
         System.arraycopy(COLOR_POOL_RGB[randomIndex], 0, randomBGR, 0, 3);
 
         // 先将外围一圈 35px 填充成灰色
@@ -112,7 +114,7 @@ public class GithubAvatarGenerator {
         }
         // left
         for (int i = 0; i < GITHUB_AVATAR_COLS; i++) {
-            for (int j = 0; j <GITHUB_AVATAR_FRAME_WIDTH; j++) {
+            for (int j = 0; j < GITHUB_AVATAR_FRAME_WIDTH; j++) {
                 for (int k = 0; k < channels; k++) {
                     bgrData[i][j][k] = (byte) COLOR_GREY_BGR[k];
                 }
@@ -127,7 +129,7 @@ public class GithubAvatarGenerator {
             }
         }
         // 将中间 5x5 的范围按照矩阵信息填充
-        boolean [][] vertex = getGithubAvatarVertex();
+        boolean[][] vertex = getGithubAvatarVertex();
         for (int i = 0; i < GITHUB_AVATAR_VERTEX_WIDTH; i++) {
             for (int j = 0; j < GITHUB_AVATAR_VERTEX_WIDTH; j++) {
                 if (vertex[i][j]) {
@@ -164,6 +166,7 @@ public class GithubAvatarGenerator {
 
     /**
      * 获取一个随机的头像
+     *
      * @param fileName 文件名
      */
     public void getARandomAvatar(String fileName) {
@@ -183,10 +186,10 @@ public class GithubAvatarGenerator {
         int channels = img.channels();
 
         // 图像中所有像素加通道的储存数据
-        int [][][] data = new int[height][width][channels];
+        int[][][] data = new int[height][width][channels];
 
         // 获取数据头像 BGR 信息
-        byte [][][] randomAvatarBGR = getGithubAvatarRGBData();
+        byte[][][] randomAvatarBGR = getGithubAvatarRGBData();
 
         // 将生成的 github 头像信息复制到图片中
         for (int i = 0; i < height; i++) {
